@@ -1,16 +1,13 @@
 Quizy Memory Game
 ========
 
-#### jQuery memory card/ pairs game plugin ####
+Fork of [QuizyPlugin](http://memorygame.quizyplugin.com/)
 
-The QuizY Memory Card Game plugin is a jQuery plugin, which allows the creation of memory games. It is very simple to use and provides various of settings in order to enhance its usability. The biggest advantage of the plugin is that it allows you to add any type of content on the back side of the card, not only images.
-
-[Demo and Documentation](http://memorygame.quizyplugin.com/)
-
+Adding callback functions when there is a match, a mismatch, or when completing the game.
 
 ### Usage ###
 
-Download the [plugin](https://github.com/frenski/quizy-memorygame) and include all the necessary files before the closing body tag.
+Download the [plugin](https://github.com/Argetloum/quizy-memorygame) and include all the necessary files before the closing body tag.
 
 ```html
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" /></script>
@@ -34,7 +31,27 @@ Call the plugin after all the script files and before the closing body tag like 
 
 ```html
 <script>
-$('#my-memorygame').quizyMemoryGame({itemWidth: 156, itemHeight: 156, itemsMargin:40, colCount:5, animType:'flip' , flipAnim:'tb', animSpeed:250, resultIcons:true});
+var quizyParams = {
+        itemWidth: 156,
+        itemHeight: 156,
+        itemsMargin: 40,
+        colCount: 4,
+        animType: 'flip',
+        flipAnim: 'tb',
+        animSpeed: 250,
+        resultIcons: true,
+        unMatchingElementsFn: function(params){
+          fnUnMatchingElements(params);
+        },
+        matchingElementsFn: function(params){
+          fnMatchingElements(params);
+        },
+        gameSummary: true,
+        gameSummaryFn: function(params){
+          fnSummary(params);
+        }
+      };
+$('#my-memorygame').quizyMemoryGame(quizyParams);
 </script>
 ```
 Create a <div> element with the same id ('my-memorygame') as we used in the activation code. Then you can create the different card items using <li> tags. Every <li> element you create will represent a different card. The content of each <li> element is what you see when the card is being showed. The order of the items doesn't really matter (they are being randomised later anyways ), what matters is the class name. If you want the item with the 'Uruguay' text to match the one with the same text, then you put class="match1". For the next pairs you put class="match2" and so on... As said, you can put whatever you want within the <li> tag - texts, images, etc. If you want to have a center-aligned image, I suggest that you create a transparent png with the same size as the card (which by default is 156px x 156px).
@@ -73,10 +90,10 @@ Create a <div> element with the same id ('my-memorygame') as we used in the acti
 * textSummaryClicks: The same as the previous but used for the text indicating the clicks done.
 * textSummaryTime: The same as the previous but used for the text indicating the time to complete.
 * onFinishCall: A callback function. Will return object with two parameters: clicks and time. You can add it when calling the plugin like this: onFinishCall: function(param){alert(param.clicks)}
-
+* gameSummaryFn: A callback to handle the end of the game
+* matchingElementsFn: A callback to handle matching elements
+* unMatchingElementsFn: A callback to hangle mismatching elements
 
 ### License ###
 
 This plugin is [MIT](http://en.wikipedia.org/wiki/MIT_License) licensed.
-
-</body>
